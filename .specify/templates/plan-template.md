@@ -31,7 +31,20 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify against `.specify/memory/constitution.md` (Next16 Links Constitution):
+
+- **Spec-first**: `spec.md` exists for this feature and plan/tasks trace to its
+  user stories and functional requirements.
+- **Traceability**: User story priorities and IDs are stable; tasks reference
+  stories (and FR IDs when applicable).
+- **Gates**: Any constitution non-compliance is recorded in Complexity Tracking
+  below with justification; none may be silent.
+- **Testable acceptance**: Each story has Independent Test and Acceptance
+  Scenarios; automated-test expectations from the spec are reflected in tasks.
+- **Clarity**: No invented stack or behavior; unresolved items use
+  `NEEDS CLARIFICATION` or the clarify workflow.
+- **Speckit layout**: Artifact paths and branch naming follow project Speckit
+  conventions.
 
 ## Project Structure
 
