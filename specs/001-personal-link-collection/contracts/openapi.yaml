@@ -1,0 +1,187 @@
+openapi: 3.1.0
+info:
+  title: Next16 Links — Personal Collection (Draft)
+  version: 0.1.0
+  description: >
+    Illustrative REST contract for authenticated link CRUD plus folder/tag
+    scaffolding. Mirrors data-model entities; actual v1 routing may defer
+    public HTTP endpoints in favor of Next.js Server Actions.
+servers:
+  - url: https://api.example.com
+    description: Placeholder deployment host
+security:
+  - bearerAuth: []
+paths:
+  /links:
+    get:
+      summary: List links for current user
+      parameters:
+        - in: query
+          name: folderId
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: tagId
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Filtered set (combined filters = AND)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Link"
+    post:
+      summary: Create link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkWrite"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Link"
+        "409":
+          description: Duplicate URL warning payload (requires confirm client-side)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DuplicateUrlConflict"
+  /links/{linkId}:
+    parameters:
+      - $ref: "#/components/parameters/linkId"
+    patch:
+      summary: Update link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkWrite"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Link"
+    delete:
+      summary: Delete link
+      responses:
+        "204":
+          description: Removed
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Supabase-signed JWT accepted by middleware (illustrative)
+  parameters:
+    linkId:
+      name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Link:
+      type: object
+      required:
+        - id
+        - userId
+        - url
+        - urlNormalized
+        - title
+        - createdAt
+        - folderId
+        - tags
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+        urlNormalized:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        folderId:
+          type: string
+          format: uuid
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagSummary"
+    LinkWrite:
+      type: object
+      required:
+        - url
+        - title
+      properties:
+        url:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        folderId:
+          type: string
+          format: uuid
+          nullable: true
+        tagIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Desired tag assignments (replace semantics TBD tasks)
+    TagSummary:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    DuplicateUrlConflict:
+      type: object
+      required: [message, conflictingLinkIds]
+      properties:
+        message:
+          type: string
+          example: A link with this URL already exists; confirm duplicate.
+        conflictingLinkIds:
+          type: array
+          items:
+            type: string
+            format: uuid
