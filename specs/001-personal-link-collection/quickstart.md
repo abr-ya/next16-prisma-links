@@ -8,15 +8,16 @@ These steps scaffold the greenfield repo with **Next.js**, **Supabase**, and **P
 2. **Supabase CLI** logged into the correct project _(optional but recommended)_.
 3. **Git** checkout on branch `001-personal-link-collection`.
 
-## 1. Bootstrap Next.js
+## 1. Monorepo + Next.js app
+
+The web app lives under **`apps/next`** (package **`@next16-links/web`**). From the **repository root**:
 
 ```bash
-npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir=false
+npm install
+npm run dev
 ```
 
-> Adjust flags if the repo already contains partial files—avoid overwriting Speckit docs under `specs/`.
-
-Pin versions in Git after scaffold.
+Bootstrap (if you recreate from scratch): scaffold into `apps/next/` and add the folder to root `package.json` **`workspaces`** (`apps/*`). See [plan.md](./plan.md) and [docs/monorepo.md](../../docs/monorepo.md). Production deploy on Vercel: [docs/vercel.md](../../docs/vercel.md).
 
 ## 2. Configure Supabase
 
@@ -27,6 +28,7 @@ Pin versions in Git after scaffold.
 ## 3. Configure Prisma
 
 ```bash
+cd apps/next   # or install from root with -w @next16-links/web
 npm install prisma @prisma/client --save-dev
 npx prisma init --datasource-provider postgresql
 ```
