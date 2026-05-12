@@ -76,44 +76,38 @@ specs/001-personal-link-collection/
 └── tasks.md             # /speckit.tasks (not created here)
 ```
 
-### Source Code (repository root)
+### Source Code (repository root — monorepo)
 
-Greenfield scaffold (not yet in repo)—proposed layout for the Next.js + Prisma + Supabase app:
+The repo uses **npm workspaces** (see root [`package.json`](../../package.json) and **[`docs/monorepo.md`](../../docs/monorepo.md)**): no extra monorepo tool is required initially; Turborepo/Nx stays optional.
 
 ```text
-app/
-├── (auth)/                # Auth routes / callbacks if split
-├── (dashboard)/           # Authenticated shells
-├── api/                   # Route Handlers where needed (auth webhooks, health)
-├── layout.tsx
-├── page.tsx               # Landing or redirect
-├── globals.css
+package.json                     # workspaces: apps/*, packages/*
 
-components/
-├── links/
-├── folders/
-├── tags/
-└── ui/
+apps/
+├── next/                        # npm name @next16-links/web — web UI + Route Handlers
+│   ├── app/
+│   ├── prisma/                  # Planned (Phase 2+)
+│   └── ...
+├── telegram-mini/               # Scaffolded placeholder — Telegram Mini App
 
-lib/
-├── auth/                  # Supabase browser/server client helpers
-├── db/                    # Prisma singleton, query helpers
-├── validation/           # Zod schemas
-└── urls/                  # Canonical URL normalization (duplicate warning)
+packages/
+├── shared/                      # @next16-links/shared
 
-prisma/
-├── schema.prisma
-└── migrations/
+specs/
 
-public/
-
-tests/
-├── unit/
-├── integration/
-└── e2e/                   # Playwright
+docs/monorepo.md, docs/vercel.md # Workspace + deploy (Vercel root dir apps/next)
 ```
 
-**Structure Decision**: **Single-project Next.js App Router application** colocating UI, Route Handlers, and Prisma. No separate backend service in v1; future clients consume the same Postgres/Auth contract documented under `contracts/`.
+**Structure Decision**: **Monorepo with two logical services**: Next.js **web + HTTP API** in **`apps/next`** (`@next16-links/web`), independent **Mini App** workspace **`apps/telegram-mini`**. Telegram bot webhooks remain on **`apps/next/app/api`** until a split is needed. Shared code in **`@next16-links/shared`**.
+
+Within the Next workspace (`apps/next/`):
+
+```text
+apps/next/
+├── components/links|folders|tags|ui/
+├── lib/auth/, lib/db/, lib/validation/, lib/urls/
+└── tests/…
+```
 
 ## Complexity Tracking
 

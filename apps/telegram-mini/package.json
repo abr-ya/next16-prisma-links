@@ -1,0 +1,11 @@
+{
+  "name": "@next16-links/telegram-mini",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Telegram Mini App SPA (planned: Vite + React or Vue). API: @next16-links/web Route Handlers (apps/next).",
+  "scripts": {
+    "dev": "echo \"Scaffold: cd apps/telegram-mini && npm create vite@latest . -- --template react-ts  (or vue-ts); then add telegram initData verification client stub.\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

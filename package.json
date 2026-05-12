@@ -1,0 +1,26 @@
+{
+  "name": "next16-links",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev -w @next16-links/web",
+    "build": "npm run build -w @next16-links/web",
+    "lint": "eslint apps packages",
+    "lint:web": "npm run lint -w @next16-links/web",
+    "typecheck": "npm run typecheck -w @next16-links/web",
+    "dev:mini": "npm run dev --workspace=@next16-links/telegram-mini"
+  },
+  "workspaces": ["apps/*", "packages/*"],
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "16.2.6",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.4.0",
+    "next": "16.2.6",
+    "prettier": "^3.8.3",
+    "typescript-eslint": "^8.59.3"
+  }
+}
