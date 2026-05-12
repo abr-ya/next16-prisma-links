@@ -31,3 +31,9 @@ Webhook bot logic can live in **`apps/next/app/api`** (same deploy) until you sp
 The npm package **must not** be named `next` (conflicts with the `next` framework dependency). The workspace is **`@next16-links/web`** inside folder **`apps/next`** — short path, clear deploy target.
 
 Deploy notes for **Vercel**: see **[vercel.md](./vercel.md)**.
+
+## Lint / TypeScript stack
+
+Central **ESLint 9** + **typescript-eslint 8** + **Prettier** live at the repository root (shared flat config). **Why ESLint is not on v10 yet** and what to revisit after upstream stabilizes is documented in **[eslint-typescript-tooling.md](./eslint-typescript-tooling.md)**.
+
+**Phase 1 PR** (setup branch → `master`): use **[pr-002-phase-01-setup.md](./pr-002-phase-01-setup.md)** as the PR description draft.

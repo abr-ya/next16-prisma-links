@@ -1,0 +1,11 @@
+// Phase 1: wiring for Prisma ORM v7 — models land in Phase 2 (tasks T006–T007).
+// URLs live in prisma.config.ts (not here). https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}

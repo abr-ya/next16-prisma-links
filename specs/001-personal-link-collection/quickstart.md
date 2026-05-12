@@ -25,29 +25,40 @@ Bootstrap (if you recreate from scratch): scaffold into `apps/next/` and add the
 2. Enable **Authentication** providers required for development (often email/password + magic links).
 3. Copy **project URL**, **anon key**, and **`service_role`** (server-only secrets) plus **DATABASE_URL** (preferred: pooler URI for Prisma with `sslmode=require`).
 
-## 3. Configure Prisma
+## 3. Configure Prisma (ORM **v7** in this repo)
+
+Packages and generated client are already declared under **`apps/next`**. Prisma **7** splits:
+
+- **`prisma/schema.prisma`** — generator + `datasource` **provider only** (connection URL is not stored here).
+- **`prisma.config.ts`** (next to `apps/next/package.json`) — `datasource.url`, migrations path, `dotenv` loading.
+- **Generated client** outputs to **`apps/next/lib/generated/prisma`** (ignored by git). Imports in app code use that path once models exist (see Prisma 7 upgrade guide).
+
+From the **repository root**:
 
 ```bash
-cd apps/next   # or install from root with -w @next16-links/web
-npm install prisma @prisma/client --save-dev
-npx prisma init --datasource-provider postgresql
+npm install
+npm run db:generate -w @next16-links/web   # or: cd apps/next && npx prisma generate
 ```
 
-Set `.env`:
+Copy **`apps/next/.env.example`** → **`.env.local`** (or `.env`) and fill real values:
 
 ```bash
-DATABASE_URL="postgresql://..."        # Supabase Postgres connection string
-DIRECT_DATABASE_URL="postgresql://..." # optional bypass for migrations
+DATABASE_URL="postgresql://..."        # Supabase Postgres (pooler URI is common for runtime)
+DIRECT_DATABASE_URL="postgresql://..." # optional: direct URL if your host requires it for migrations
 NEXT_PUBLIC_SUPABASE_URL="..."
 NEXT_PUBLIC_SUPABASE_ANON_KEY="..."
-SUPABASE_SERVICE_ROLE_KEY="..."        # NEVER expose client-side
+SUPABASE_SERVICE_ROLE_KEY="..."       # NEVER expose client-side
 ```
 
-Model tables per [data-model.md](./data-model.md), then:
+`postinstall` runs **`prisma generate`** so a placeholder `DATABASE_URL` is only needed when you run migrations or a direct DB command; for codegen alone the repo uses a non-connecting fallback in **`prisma.config.ts`**.
+
+Model tables per [data-model.md](./data-model.md), then (from **`apps/next`** or via workspace scripts you add):
 
 ```bash
-npx prisma migrate dev --name init_links
+cd apps/next && npx prisma migrate dev --name init_links
 ```
+
+Runtime **`PrismaClient`** in v7 uses a **driver adapter** (e.g. `@prisma/adapter-pg` + **`pg`**); wire that when you add `lib/db/prisma.ts` in the foundational phase.
 
 ## 4. Supabase SSR wiring
 

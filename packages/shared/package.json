@@ -12,6 +12,6 @@
     "lint": "echo \"Add eslint for packages/shared when schemas land\""
   },
   "devDependencies": {
-    "typescript": "^5"
+    "typescript": "^6.0.3"
   }
 }

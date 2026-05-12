@@ -44,11 +44,11 @@ For **every** delivery phase (1–7):
 
 **Purpose**: Scaffold the repo per [plan.md](./plan.md) and [quickstart.md](./quickstart.md).
 
-- [ ] T001 Scaffold Next.js (App Router, TypeScript, Tailwind, ESLint) in **`apps/next`** as workspace **`@next16-links/web`** (root [`package.json`](../../package.json) lists `apps/*`); preserve `/specs/**` at repo root. Files: `apps/next/next.config.ts` or `next.config.mjs`, `apps/next/app/`, `apps/next/tsconfig.json`, root `package.json` workspaces orchestration.
-- [ ] T002 Create directory layout aligned with plan **under `apps/next/`**: `apps/next/components/links/`, …, `apps/next/lib/auth/`, `apps/next/lib/db/`, … `apps/next/tests/unit/`, `apps/next/tests/e2e/`
-- [ ] T003 Initialize Prisma inside **`apps/next`**: run installs from repo root with workspace flag or `cd apps/next` + `npm install prisma @prisma/client` as appropriate; **`apps/next/prisma/schema.prisma`** with PostgreSQL `datasource db` placeholders.
-- [ ] T004 `[P]` Add `.env.example` documenting `DATABASE_URL`, optional `DIRECT_DATABASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (server-only secret)
-- [ ] T005 `[P]` Install `@supabase/ssr` `@supabase/supabase-js` and `zod` per plan `package.json` dependencies
+- [x] T001 Scaffold Next.js (App Router, TypeScript, Tailwind, ESLint) in **`apps/next`** as workspace **`@next16-links/web`** (root [`package.json`](../../package.json) lists `apps/*`); preserve `/specs/**` at repo root. Files: `apps/next/next.config.ts` or `next.config.mjs`, `apps/next/app/`, `apps/next/tsconfig.json`, root `package.json` workspaces orchestration.
+- [x] T002 Create directory layout aligned with plan **under `apps/next/`**: `apps/next/components/links/`, …, `apps/next/lib/auth/`, `apps/next/lib/db/`, … `apps/next/tests/unit/`, `apps/next/tests/e2e/`
+- [x] T003 Initialize Prisma inside **`apps/next`**: run installs from repo root with workspace flag or `cd apps/next` + `npm install prisma @prisma/client` as appropriate; **`apps/next/prisma/schema.prisma`** with PostgreSQL `datasource db` placeholders.
+- [x] T004 `[P]` Add `.env.example` documenting `DATABASE_URL`, optional `DIRECT_DATABASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (server-only secret)
+- [x] T005 `[P]` Install `@supabase/ssr` `@supabase/supabase-js` and `zod` per plan `package.json` dependencies
 
 ---
 

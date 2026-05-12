@@ -32,9 +32,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
+
+# prisma (v7 generates outside node_modules)
+/lib/generated/
 
 # typescript
 *.tsbuildinfo

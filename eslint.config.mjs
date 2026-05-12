@@ -96,7 +96,13 @@ const userUiStack = tseslint.config({
 const prettierRecommended = eslintPluginPrettierRecommended.default ?? eslintPluginPrettierRecommended;
 
 export default [
-  globalIgnores(["**/node_modules/**", "**/dist/**", "**/.turbo/**", "next16-links-app/**"]),
+  globalIgnores([
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.turbo/**",
+    "**/lib/generated/**",
+    "next16-links-app/**",
+  ]),
   {
     files: nextAppFiles,
     settings: {
