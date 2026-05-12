@@ -26,7 +26,7 @@ Deliver an authenticated web app where each user privately saves **links** (URL,
 
 **Storage**: **PostgreSQL** hosted on **Supabase**; Prisma schema as source of truth for migrations; **Row Level Security (RLS)** enabled on user-owned tables with policies keyed to `auth.uid()` for defense in depth (see [research.md](./research.md)).
 
-**Testing**: **Vitest** + **React Testing Library** for unit/component tests; **Playwright** for critical end-to-end flows (sign-in surface, create link, folder constraint, filters). Align exact versions with scaffold lockfile.
+**Testing**: **Vitest** + **React Testing Library** for unit/component tests; **Playwright** for critical end-to-end flows (sign-in surface, create link, folder constraint, filters). Align exact versions with scaffold lockfile. **Per-phase policy** (TDD when practical, else tests immediately after implementation in the same branch before PR) lives in [tasks.md](./tasks.md).
 
 **Target Platform**: Modern evergreen browsers; server runtime **Node.js LTS** matching Next.js requirements at scaffold time.
 
@@ -131,3 +131,18 @@ tests/
 | [data-model.md](./data-model.md) | Entities, fields, uniqueness, relational rules vs FR |
 | [quickstart.md](./quickstart.md) | Local/dev setup commands and env vars |
 | [contracts/](./contracts/) | Machine- and human-readable API/data shapes for web + future clients |
+
+## Delivery branching (implementation)
+
+Specs and tasks use **delivery phases** (setup → foundational → stories → polish). Execution rule for code:
+
+1. **One Git feature branch per delivery phase** (names in [tasks.md](./tasks.md)); branch from **`master`** (or from the tip of **`master`** after the previous phase was merged).
+2. **Merge only via Pull Request** into `master` after:
+   - the tasks for that phase are done (or deliberately scoped subset is documented in the PR),
+   - **tests for that phase are done in the same branch** per [tasks.md](./tasks.md) **Per-phase testing**: prefer **TDD**; if TDD is blocked by real architectural friction, add automated tests **immediately after** implementation in that branch before the PR,
+   - **the full automated test suite** configured for the repo passes (Vitest/unit, Playwright/e2e if present, lint/CI gate),
+   - a short note in the PR links to the phase / task IDs (**Txxx**, **USx**) and, if applicable, why tests were not written first.
+
+Long-lived **`001-personal-link-collection`** can stay for Speckit documentation; **implementation phase branches use ascending numeric prefixes `002`…`008`** (e.g. `002-phase-01-setup`, `003-phase-02-foundational`, …`008-phase-07-polish`; full list in [tasks.md](./tasks.md)) so branch order matches delivery order.
+
+Agents do **not** commit or merge on your behalf unless you explicitly ask—you run `git`/GitHub flows locally or in CI.
